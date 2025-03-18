@@ -12,7 +12,7 @@ class MyUserForm(UserCreationForm):
 
         send_mail(
             subject='Вы',
-            message=f'Вы пытался опубликовать запись!',
+            message='Кто-то пытался опубликовать запись!',
             from_email='birthday_form@acme.not',
             recipient_list=['admin@acme.not'],
             fail_silently=True,
