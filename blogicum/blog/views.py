@@ -15,22 +15,27 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     form_class = CommentForm
 
     def form_valid(self, form):
-        form.instance.post = get_object_or_404(Post, pk=self.kwargs["post_id"])
+        form.instance.post = get_object_or_404(Post,
+                                               pk=self.kwargs["post_id"])
         form.instance.author = self.request.user
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse("blog:post_detail", kwargs={"post_id": self.kwargs["post_id"]})
+        return reverse("blog:post_detail",
+                       kwargs={"post_id": self.kwargs["post_id"]})
 
 
 class CommentDeleteView(CommentEditMixin, LoginRequiredMixin, DeleteView):
     def get_success_url(self):
-        return reverse("blog:post_detail", kwargs={"post_id": self.kwargs["post_id"]})
+        return reverse("blog:post_detail",
+                       kwargs={"post_id": self.kwargs["post_id"]})
 
     def delete(self, request, *args, **kwargs):
-        comment = get_object_or_404(Comment, pk=self.kwargs["comment_pk"])
+        comment = get_object_or_404(Comment,
+                                    pk=self.kwargs["comment_pk"])
         if self.request.user != comment.author:
-            return redirect("blog:post_detail", post_id=self.kwargs["post_id"])  # Исправлено: post_id вместо pk
+            return redirect("blog:post_detail",
+                            post_id=self.kwargs["post_id"])
         return super().delete(request, *args, **kwargs)
 
 
@@ -38,13 +43,16 @@ class CommentUpdateView(CommentEditMixin, LoginRequiredMixin, UpdateView):
     form_class = CommentForm
 
     def dispatch(self, request, *args, **kwargs):
-        comment = get_object_or_404(Comment, pk=self.kwargs["comment_pk"])  # Используем get_object_or_404
+        comment = get_object_or_404(Comment,
+                                    pk=self.kwargs["comment_pk"])
         if self.request.user != comment.author:
-            return redirect("blog:post_detail", post_id=self.kwargs["post_id"])
+            return redirect("blog:post_detail",
+                            post_id=self.kwargs["post_id"])
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse("blog:post_detail", kwargs={"post_id": self.kwargs["post_id"]})
+        return reverse("blog:post_detail",
+                       kwargs={"post_id": self.kwargs["post_id"]})
 
 
 class IndexHome(CustomListMixin, ListView):
@@ -155,7 +163,8 @@ class PostUpdateView(LoginRequiredMixin, PostChangeMixin, UpdateView):
     form_class = PostForm
 
     def get_success_url(self):
-        return reverse('blog:post_detail', args=[self.kwargs['post_id']])
+        return reverse('blog:post_detail',
+                       args=[self.kwargs['post_id']])
 
 
 class PostDeleteView(LoginRequiredMixin, PostChangeMixin, DeleteView):

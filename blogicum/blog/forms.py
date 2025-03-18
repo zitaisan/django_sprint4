@@ -22,6 +22,7 @@ class PostForm(forms.ModelForm):
                                             attrs={'type': 'datetime-local'})
         }
 
+
 class UserForm(forms.ModelForm):
     class Meta:
         model = User

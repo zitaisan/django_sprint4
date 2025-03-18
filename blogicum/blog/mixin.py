@@ -1,9 +1,6 @@
 from django.db.models import Count
 from django.shortcuts import redirect
-from django.urls import reverse
-
 from .models import Comment, Post
-
 
 
 class PostChangeMixin:
@@ -18,7 +15,8 @@ class PostChangeMixin:
         Сверяем автора объекта и пользователя из запроса.
         """
         if self.get_object().author != request.user:
-            return redirect('blog:post_detail', self.kwargs['post_id'])
+            return redirect('blog:post_detail',
+                            self.kwargs['post_id'])
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -34,6 +32,7 @@ class CustomListMixin:
                 comment_count=Count('comments')
             )
         ).order_by('-pub_date')
+
 
 class CommentEditMixin:
     model = Comment
